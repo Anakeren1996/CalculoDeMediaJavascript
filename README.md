@@ -1,4 +1,4 @@
-<h1>Calculo de três notas com javascript</h1>
+<h1>Cálculo de três notas com javascript</h1>
 
 <p>Programa simples, desenvolvido para praticar javascript.</p>
 
