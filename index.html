@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 15 de JS Calcular Média</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: #ececec;
+        }
+
+        main {
+            width: 100%;
+            height: 100%;
+            padding: 1rem;
+            /* espacamento interno */
+        }
+
+        section {
+            width: 100%;
+            margin: 0 auto;
+            padding: 1rem;
+            margin-bottom: 0.625rem;
+        }
+
+        .alerta {
+            background: #f44336;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        /* CLASS PARA FORMATAR COM JS */
+        .aprovado {
+            background: #64dd17;
+        }
+
+        .reprovado {
+            background: #f44336;
+        }
+
+        .recuperacao {
+            background: #ffc107;
+        }
+
+        /* FORMULARIO */
+        form {
+            margin: 1rem;
+        }
+
+        /* DIV DOS INPUTS */
+        .form-group {
+            margin: 0.625rem;
+        }
+
+        /* INPUTS */
+        input[type=number],
+        input[type=text] {
+            padding: 5px;
+            text-align: center;
+        }
+
+        .cx,
+        input[type=text] {
+            border: 1px solid #ececec;
+            border-radius: 5px;
+        }
+
+        /* BOTOES */
+        .form-group button {
+            color: #fff;
+            border: 0;
+            border-radius: 5px;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            box-shadow: 0 0 3px #222;
+        }
+
+        #btnCalcular {
+            background: #1a237e;
+        }
+
+        #btnLimpar {
+            background: #ff3d00;
+        }
+    </style>
+</head>
+
+<body>
+    <main id='tela-principal'>
+        <section class='conteudo' id='formulario'>
+            <h1>Calcular Média</h1>
+            <form action="#" method='POST'>
+                <div class='form-group'>
+                    <label for="nota1">Nota 1</label>
+                    <input type="number" name="nota1" id="nota1" min='0.0' max='10.0' step="0.1" autofocus required
+                        onBlur='validarNumero(this)' />
+                </div>
+
+                <div class='form-group'>
+                    <label for="nota2">Nota 2</label>
+                    <input type="number" name="nota2" id="nota2" min='0.0' max='10.0' step="0.1" required
+                        onBlur='validarNumero(this)' />
+                </div>
+
+                <div class='form-group'>
+                    <label for="nota3">Nota 3</label>
+                    <input type="number" name="nota3" id="nota3" min='0.0' max='10.0' step="0.1" required
+                        onBlur='validarNumero(this)' />
+                </div>
+
+                <div class='form-group'>
+                    <button class='botao' id='btnCalcular' type="submit">Calcular</button>
+                    <button type='reset' id='btnLimpar'>Limpar</button>
+                </div>
+
+                <div class='form-group'>
+                    <label for="media">Média</label>
+                    <input type="number" name="media" id="media" value='' readonly />
+                </div>
+
+                <div class="form-group">
+                    <input type="text" name="situacao" class="cx" id="situacao" placeholder='Situação Final' readonly />
+                </div>
+            </form>
+            <p id='aviso' class=''></p>
+        </section>
+    </main>
+
+    <script>
+        let aviso = document.querySelector('#aviso');
+        let formulario = document.querySelector('form');
+
+        let btnCalcular = document.querySelector('#btnCalcular');
+        let btnLimpar = document.querySelector('#btnLimpar');
+
+        // SELECIONANDO TODAS AS CAIXAS DE TEXTO PELO ID
+
+        let cxNota1 = document.querySelector('#nota1');
+        let cxNota2 = document.querySelector('#nota2');
+        let cxNota3 = document.querySelector('#nota3');
+        let cxMedia = document.querySelector('#media');
+        let cxSituacao = document.querySelector('#situacao');
+
+        // FUNÇÃO PARA CALCULAR A MÉDIA
+
+        function calcularMedia(n1, n2, n3) {
+            return (n1 + n2 + n3) / 3
+        }
+
+        // FUNÇÃO PARA DEFINIR A SITUAÇÃO FINAL COM BASE NA MÉDIA
+
+        function situacaoFinal(mediaFinal) {
+            let situacaoFinal = ''
+
+            if (mediaFinal >= 7) {
+                situacaoFinal = 'Aluno aprovado!'
+                // console.log("Sim");
+            } else if (mediaFinal <= 3) {
+                situacaoFinal = 'Aluno reprovado!'
+                // console.log("Não");
+            } else {
+                situacaoFinal = 'Aluno em recuperação!'
+                // console.log("Talvez");
+            }
+            return situacaoFinal;
+        }
+
+        // // FORMATAR A CAIXA DE SITUACAO FINAL
+
+        function formatarSituacao(situacaoFinal) {
+            console.log('Situação Final ' + situacaoFinal);
+            switch (situacaoFinal) {
+
+                case 'Aluno aprovado!':
+                    cxSituacao.classList.remove('reprovado');
+                    cxSituacao.classList.remove('recuperacao');
+                    cxSituacao.classList.add('aprovado');
+                    // console.log('Adiciona a classe aprovado');
+                    break;
+
+                case 'Aluno reprovado!':
+                    cxSituacao.classList.remove('aprovado');
+                    cxSituacao.classList.remove('recuperacao');
+                    cxSituacao.classList.add('reprovado');
+                    // console.log('Adicione a classe reprovado');
+                    break;
+
+                case 'Aluno em recuperação!':
+                    cxSituacao.classList.remove('aprovado');
+                    cxSituacao.classList.remove('reprovado');
+                    cxSituacao.classList.add('recuperacao');
+                    // console.log('Adicione a classe recuperacao');
+                    break;
+
+                default:
+                    console.log('Situação indefinida');
+
+            } // ACABA SWITCH CASE
+        }
+
+        // VALIDANDO E GERANDO MENSAGEM CASO O VALOR INSERIDO PELO USUÁRIO NAÕ ESTEJA NAS CONDIÇÕES CORRETAS
+
+        function validarNumero(numero) {
+            let num1 = cxNota1.value;
+            let num2 = cxNota2.value;
+            let num3 = cxNota3.value;
+            if (num1 < 0 || num1 > 10 || num2 < 0 || num2 > 10 || num3 < 0 || num3 > 10) {
+                formulario.reset() // LIMPA O FORM E LOGO EM SEGUIDA EXIBE O AVISO:
+                aviso.textContent = 'Digite uma nota entre 0.0 e 10.0';
+                aviso.classList.add('alerta');
+
+                // DEPOIS DE DOIS SEGUNDOS, A CAIXA COM A MENSAGEM TEM QUE SUMIR = FLASH MESSAGE
+                setTimeout(function () {
+                    aviso.textContent = '';
+                    aviso.classList.remove('alerta');
+                }, 2000);
+            }
+        }
+
+        // CALCULANDO A MÉDIA DEPOIS DO CLICK NO BOTÃO
+
+        btnCalcular.addEventListener('click', function (e) {
+            // PEGA O VALOR QUE ESTÁ DENTRO DAS CAIXAS
+            // PEGO O VALUE DAS CAIXAS E TRANSFORMO EM FLOAT
+            let nota1 = parseFloat(cxNota1.value);
+            let nota2 = parseFloat(cxNota2.value);
+            let nota3 = parseFloat(cxNota3.value);
+            let media = calcularMedia(nota1, nota2, nota3);
+
+            console.log(nota1);
+            console.log(nota2);
+            console.log(nota3);
+            console.log(media);
+
+            if (isNaN(media) || media < 0) {
+                console.log('Não é um número');
+                cxSituacao.value = '';
+            } else {
+                cxMedia.value = parseFloat(media);
+                cxSituacao.value = situacaoFinal(media);
+                formatarSituacao(situacaoFinal(media))
+            }
+
+            e.preventDefault();
+
+        });
+
+        // // APOS LIMPAR TIRAR AS CLASS DA CX SITUACAO
+        btnLimpar.addEventListener('click', function () {
+            cxSituacao.classList.remove('aprovado')
+            cxSituacao.classList.remove('reprovado')
+            cxSituacao.classList.remove('recuperacao')
+        })
+    </script>
+
+</body>
+
+</html>
