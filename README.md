@@ -1,6 +1,6 @@
 <h1>Calculo de três notas com javascript</h1>
 
-<p>Programa simples, desenvolvido para praticar javascript</p>
+<p>Programa simples, desenvolvido para praticar javascript.</p>
 
 <p>Principais funcionalidades do programa:</p>
 
